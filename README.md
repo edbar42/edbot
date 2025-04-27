@@ -1,23 +1,41 @@
 # Edbot
-A simple discord bot built on Elixir.
+Um bot simples para Discord construído em Elixir.
 
-## Installation
-Clone this directory and then run:
+## Instalação
+Clone este repositório.
+
+```sh
+git clone git@github.com:edbar42/edbot.git
+```
+
+### Executando com Docker
+Você precisa ter o `docker` e o `docker-compose` instalados.
+
+Simplesmente execute
+
+```sh
+docker-compose run --build
+```
+
+para construir e executar a aplicação. Depois disso, o bot estará pronto para interação.
+
+### Executando em um Ambiente de Shell
+Você precisará ter o Elixir v1.18.3 ou superior instalado.
 
 ```sh
 mix deps.get
 ```
 
-You need to set the environment variable for the Nostrum discord bot token in a `.env` file like so:
+Você precisa definir a variável de ambiente para o token do bot Discord Nostrum em um arquivo `.env`, assim:
 
 ```
 export NOSTRUM_TOKEN="TOKEN"
 ```
 
-Then, simply run
+Depois, basta executar:
 
 ```sh
 iex -S mix
 ```
 
-and the bot should be ready for interaction.
+e o bot estará pronto para interação.
