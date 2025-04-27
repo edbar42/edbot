@@ -23,6 +23,7 @@ defmodule Edbot.MixProject do
   defp deps do
     [
       {:nostrum, "~> 0.8"},
+      {:httpoison, "~> 2.0"}
     ]
   end
 end

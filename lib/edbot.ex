@@ -1,13 +1,14 @@
 defmodule Edbot do
   use Nostrum.Consumer
 
-  alias Nostrum.Api
+  alias Edbot.Commands
 
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     IO.inspect(msg)
 
     case msg.content do
-      "!ping" -> Api.Message.create(msg.channel_id, "Pong!")
+      "!ping" -> Commands.pong(msg)
+      "!fakepic" -> Commands.fetchPic(msg)
       _ -> :ignore
     end
   end
