@@ -1,21 +1,23 @@
 # Edbot
-
-**TODO: Add description**
+A simple discord bot built on Elixir.
 
 ## Installation
+Clone this directory and then run:
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `edbot` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:edbot, "~> 0.1.0"}
-  ]
-end
+```sh
+mix deps.get
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/edbot>.
+You need to set the environment variable for the Nostrum discord bot token in a `.env` file like so:
 
+```
+export NOSTRUM_TOKEN="TOKEN"
+```
+
+Then, simply run
+
+```sh
+iex -S mix
+```
+
+and the bot should be ready for interaction.

@@ -23,7 +23,6 @@ defmodule Edbot.MixProject do
   defp deps do
     [
       {:nostrum, "~> 0.8"},
-      {:dotenv, "~> 2.0"}
     ]
   end
 end
