@@ -11,7 +11,7 @@ defmodule Edbot.Commands do
   def fetchPic(channel_id) do
     case HTTPoison.get("https://thispersondoesnotexist.com", [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: image_data}} ->
-        Api.create_message(channel_id,
+        Api.Message.create(channel_id,
           file: %{
             name: "generated_person.jpg",
             body: image_data
@@ -19,7 +19,7 @@ defmodule Edbot.Commands do
         )
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        Api.create_message(channel_id, "Failed to fetch image: #{inspect(reason)}")
+        Api.Message.create(channel_id, "Failed to fetch image: #{inspect(reason)}")
     end
   end
 
@@ -42,7 +42,28 @@ defmodule Edbot.Commands do
         )
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        Api.create_message(channel_id, "Failed to fetch crime story: #{inspect(reason)}")
+        Api.Message.create(channel_id, "Failed to fetch crime story: #{inspect(reason)}")
+    end
+  end
+
+  def fetchQuote(channel_id) do
+    case HTTPoison.get("https://api.breakingbadquotes.xyz/v1/quotes") do
+      {:ok, %HTTPoison.Response{status_code: 200, body: quote}} ->
+        {:ok, parsed_json} = Jason.decode(quote)
+        quote = parsed_json |> List.first()
+        text = quote["quote"]
+        author = quote["author"]
+
+        Api.Message.create(
+          channel_id,
+          """
+          > *#{text}*
+          > **\\- #{author}**
+          """
+        )
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Api.Message.create(channel_id, "Failed to fetch Breaking Bad quote: #{inspect(reason)}")
     end
   end
 end

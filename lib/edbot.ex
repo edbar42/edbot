@@ -10,6 +10,7 @@ defmodule Edbot do
       "!ping" -> Commands.pong(msg.channel_id)
       "!fakepic" -> Commands.fetchPic(msg.channel_id)
       "!procurado" -> Commands.fetchCrime(msg.channel_id)
+      "!brba" -> Commands.fetchQuote(msg.channel_id)
       _ -> :ignore
     end
   end
