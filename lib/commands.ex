@@ -4,10 +4,6 @@ defmodule Edbot.Commands do
 
   HTTPoison.start()
 
-  def pong(channel_id) do
-    Api.Message.create(channel_id, "Pong!")
-  end
-
   def fetchPic(channel_id) do
     case HTTPoison.get("https://thispersondoesnotexist.com", [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: image_data}} ->
