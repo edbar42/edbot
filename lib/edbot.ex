@@ -10,6 +10,7 @@ defmodule Edbot do
       "!fake" -> Commands.fetchPic(msg.channel_id)
       "!procurado" -> Commands.fetchCrime(msg.channel_id)
       "!brba" -> Commands.fetchQuote(msg.channel_id)
+      "!imposto" -> Commands.fetchImposto(msg.channel_id)
       _ -> :ignore
     end
   end

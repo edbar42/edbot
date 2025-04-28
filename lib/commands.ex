@@ -62,4 +62,27 @@ defmodule Edbot.Commands do
         Api.Message.create(channel_id, "Failed to fetch Breaking Bad quote: #{inspect(reason)}")
     end
   end
+
+  def fetchImposto(channel_id) do
+    case HTTPoison.get(
+           "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
+         ) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: imposto}} ->
+        {:ok, parsed_json} = Jason.decode(imposto)
+
+        valor =
+          parsed_json["Valor"]
+          |> Number.Currency.number_to_currency(unit: "R$", delimiter: ".", separator: ",")
+
+        Api.Message.create(
+          channel_id,
+          """
+          Neste ano Fortaleza arrecadou **#{valor}** em impostos municipais.
+          """
+        )
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Api.Message.create(channel_id, "Failed to fetch Breaking Bad quote: #{inspect(reason)}")
+    end
+  end
 end
