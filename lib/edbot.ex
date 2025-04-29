@@ -7,10 +7,10 @@ defmodule Edbot do
     IO.inspect(msg)
 
     case msg.content do
-      "!fake" -> Commands.fetchPic(msg.channel_id)
-      "!procurado" -> Commands.fetchCrime(msg.channel_id)
-      "!brba" -> Commands.fetchQuote(msg.channel_id)
-      "!imposto" -> Commands.fetchImposto(msg.channel_id)
+      "!fake" -> Commands.fetch_pic(msg.channel_id)
+      "!procurado" -> Commands.fetch_crime(msg.channel_id)
+      "!brba" -> Commands.fetch_quote(msg.channel_id)
+      "!imposto" -> Commands.fetch_imposto(msg.channel_id)
       _ -> :ignore
     end
   end

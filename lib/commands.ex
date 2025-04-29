@@ -4,8 +4,14 @@ defmodule Edbot.Commands do
 
   HTTPoison.start()
 
-  def fetchPic(channel_id) do
-    case HTTPoison.get("https://thispersondoesnotexist.com", [], follow_redirect: true) do
+  # URL das APIs
+  @fake_cmd_api_url "https://thispersondoesnotexist.com"
+  @procurado_cmd_api_url "https://api.fbi.gov/wanted/v1/list"
+  @brba_cmd_api_url "https://api.breakingbadquotes.xyz/v1/quotes"
+  @imposto_cmd_api_url "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
+
+  def fetch_pic(channel_id) do
+    case HTTPoison.get(@fake_cmd_api_url, [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: image_data}} ->
         Api.Message.create(channel_id,
           file: %{
@@ -19,10 +25,10 @@ defmodule Edbot.Commands do
     end
   end
 
-  def fetchCrime(channel_id) do
+  def fetch_crime(channel_id) do
     page_number = :rand.uniform(10)
 
-    case HTTPoison.get("https://api.fbi.gov/wanted/v1/list?page=#{page_number}") do
+    case HTTPoison.get("#{@procurado_cmd_api_url}?page=#{page_number}") do
       {:ok, %HTTPoison.Response{status_code: 200, body: crimes}} ->
         {:ok, parsed_json} = Jason.decode(crimes)
         crimes = parsed_json["items"]
@@ -42,8 +48,8 @@ defmodule Edbot.Commands do
     end
   end
 
-  def fetchQuote(channel_id) do
-    case HTTPoison.get("https://api.breakingbadquotes.xyz/v1/quotes") do
+  def fetch_quote(channel_id) do
+    case HTTPoison.get(@brba_cmd_api_url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: quote}} ->
         {:ok, parsed_json} = Jason.decode(quote)
         quote = parsed_json |> List.first()
@@ -63,10 +69,8 @@ defmodule Edbot.Commands do
     end
   end
 
-  def fetchImposto(channel_id) do
-    case HTTPoison.get(
-           "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
-         ) do
+  def fetch_imposto(channel_id) do
+    case HTTPoison.get(@imposto_cmd_api_url) do
       {:ok, %HTTPoison.Response{status_code: 200, body: imposto}} ->
         {:ok, parsed_json} = Jason.decode(imposto)
 
@@ -82,7 +86,7 @@ defmodule Edbot.Commands do
         )
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        Api.Message.create(channel_id, "Failed to fetch Breaking Bad quote: #{inspect(reason)}")
+        Api.Message.create(channel_id, "Failed to fetch tax data: #{inspect(reason)}")
     end
   end
 end
