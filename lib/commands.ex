@@ -10,6 +10,7 @@ defmodule Edbot.Commands do
   @brba_cmd_api_url "https://api.breakingbadquotes.xyz/v1/quotes"
   @imposto_cmd_api_url "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
   @espaco_cmd_api_url "http://api.open-notify.org/astros.json"
+  @ip_cmd_api_url "https://icanhazip.com/"
 
   def fetch_pic(channel_id) do
     case HTTPoison.get(@fake_cmd_api_url, [], follow_redirect: true) do
@@ -116,6 +117,21 @@ defmodule Edbot.Commands do
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         Api.Message.create(channel_id, "Failed to fetch data: #{inspect(reason)}")
+    end
+  end
+
+  def fetch_ip(channel_id) do
+    case HTTPoison.get(@ip_cmd_api_url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: req_body}} ->
+        Api.Message.create(
+          channel_id,
+          """
+          Seu ip é: `#{req_body}`
+          """
+        )
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Api.Message.create(channel_id, "Failed to fetch ip: #{inspect(reason)}")
     end
   end
 end

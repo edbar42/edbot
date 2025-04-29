@@ -12,6 +12,7 @@ defmodule Edbot do
       "!brba" -> Commands.fetch_quote(msg.channel_id)
       "!imposto" -> Commands.fetch_imposto(msg.channel_id)
       "!espaço" -> Commands.fetch_people_in_space(msg.channel_id)
+      "!ip" -> Commands.fetch_ip(msg.channel_id)
       _ -> :ignore
     end
   end
