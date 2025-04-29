@@ -9,6 +9,7 @@ defmodule Edbot.Commands do
   @procurado_cmd_api_url "https://api.fbi.gov/wanted/v1/list"
   @brba_cmd_api_url "https://api.breakingbadquotes.xyz/v1/quotes"
   @imposto_cmd_api_url "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
+  @espaco_cmd_api_url "http://api.open-notify.org/astros.json"
 
   def fetch_pic(channel_id) do
     case HTTPoison.get(@fake_cmd_api_url, [], follow_redirect: true) do
@@ -87,6 +88,34 @@ defmodule Edbot.Commands do
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         Api.Message.create(channel_id, "Failed to fetch tax data: #{inspect(reason)}")
+    end
+  end
+
+  def fetch_people_in_space(channel_id) do
+    case HTTPoison.get(@espaco_cmd_api_url) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: resp_body}} ->
+        {:ok, parsed_json} = Jason.decode(resp_body)
+
+        total = parsed_json["number"]
+        people = parsed_json["people"]
+
+        people_list =
+          people
+          |> Enum.map(fn %{"craft" => craft, "name" => name} ->
+            "- #{name} (#{craft})"
+          end)
+          |> Enum.join("\n")
+
+        Api.Message.create(
+          channel_id,
+          """
+          Há #{total} pessoas no espaço agora:
+          #{people_list}
+          """
+        )
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Api.Message.create(channel_id, "Failed to fetch data: #{inspect(reason)}")
     end
   end
 end

@@ -11,6 +11,7 @@ defmodule Edbot do
       "!procurado" -> Commands.fetch_crime(msg.channel_id)
       "!brba" -> Commands.fetch_quote(msg.channel_id)
       "!imposto" -> Commands.fetch_imposto(msg.channel_id)
+      "!espaço" -> Commands.fetch_people_in_space(msg.channel_id)
       _ -> :ignore
     end
   end
