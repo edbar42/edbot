@@ -14,6 +14,7 @@ defmodule Edbot do
       "!espaço" -> Commands.fetch_people_in_space(msg.channel_id)
       "!ip" -> Commands.fetch_ip(msg.channel_id)
       "!cep" <> _rest = content -> Commands.fetch_cep(msg.channel_id, content)
+      "!help" -> Commands.show_help(msg.channel_id)
       _ -> :ignore
     end
   end

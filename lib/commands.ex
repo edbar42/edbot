@@ -162,4 +162,39 @@ defmodule Edbot.Commands do
         Api.Message.create(channel_id, "Failed to fetch CEP: #{inspect(reason)}")
     end
   end
+
+  def show_help(channel_id) do
+    help_text = """
+    🤖 **Lista de Comandos do Bot**
+
+    **!fake**
+    • Gera uma foto de perfil aleatória de pessoa fictícia
+
+    **!procurado**
+    • Mostra um aviso aleatório de criminoso procurado pelo FBI e detalhes sobre a recompensa
+
+    **!brba**
+    • Exibe uma citação aleatória de Breaking Bad
+
+    **!imposto**
+    • Mostra quanto foi arrecadado até o momento em impostos municipais em Fortaleza
+
+    **!espaço**
+    • Mostra quantas pessoas estão atualmente no espaço, seus nomes e que nave tripulam
+
+    **!ip**
+    • Exibe seu endereço de IP
+
+    **!cep**
+    • Busca informações de um CEP brasileiro válido
+    • Digite o CEP apenas com números
+    • Exemplo: `!cep 01001000`
+
+    **Observações:**
+    • Todos os comandos começam com o prefixo `!`
+    • Comandos que não forem reconhecidos serão ignorados
+    """
+
+    Api.Message.create(channel_id, help_text)
+  end
 end
