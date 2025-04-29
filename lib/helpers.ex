@@ -10,4 +10,11 @@ defmodule Edbot.Helpers do
       {criminal, crime_reward}
     end
   end
+
+  def parse_command_string(command_string) do
+    case String.split(command_string, ~r/\s+/, parts: 2) do
+      [command, args] -> {String.trim(command), String.trim(args)}
+      [command] -> {String.trim(command), ""}
+    end
+  end
 end

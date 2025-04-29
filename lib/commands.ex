@@ -11,6 +11,7 @@ defmodule Edbot.Commands do
   @imposto_cmd_api_url "https://impostometro.com.br/Contador/Municipios?estado=ce&municipio=fortaleza"
   @espaco_cmd_api_url "http://api.open-notify.org/astros.json"
   @ip_cmd_api_url "https://icanhazip.com/"
+  @cep_cmd_api_url "https://viacep.com.br/ws/"
 
   def fetch_pic(channel_id) do
     case HTTPoison.get(@fake_cmd_api_url, [], follow_redirect: true) do
@@ -132,6 +133,33 @@ defmodule Edbot.Commands do
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         Api.Message.create(channel_id, "Failed to fetch ip: #{inspect(reason)}")
+    end
+  end
+
+  def fetch_cep(channel_id, content) do
+    {_, args} = Helpers.parse_command_string(content)
+
+    case HTTPoison.get(@cep_cmd_api_url <> args <> "/json") do
+      {:ok, %HTTPoison.Response{status_code: 200, body: req_body}} ->
+        data = Jason.decode!(req_body)
+
+        formatted_response = """
+        📮 **CEP #{data["cep"]}**
+
+        🏠 **Endereço:** #{data["logradouro"]}
+        🏘️ **Bairro:** #{data["bairro"]}
+        🌆 **Cidade:** #{data["localidade"]}
+        🏷️ **Estado:** #{data["estado"]} (#{data["uf"]})
+        🌎 **Região:** #{data["regiao"]}
+        📞 **DDD:** #{data["ddd"]}
+
+        #{if data["complemento"] != "", do: "ℹ️ **Complemento:** #{data["complemento"]}", else: ""}
+        """
+
+        Api.Message.create(channel_id, formatted_response)
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Api.Message.create(channel_id, "Failed to fetch CEP: #{inspect(reason)}")
     end
   end
 end

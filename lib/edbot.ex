@@ -13,6 +13,7 @@ defmodule Edbot do
       "!imposto" -> Commands.fetch_imposto(msg.channel_id)
       "!espaço" -> Commands.fetch_people_in_space(msg.channel_id)
       "!ip" -> Commands.fetch_ip(msg.channel_id)
+      "!cep" <> _rest = content -> Commands.fetch_cep(msg.channel_id, content)
       _ -> :ignore
     end
   end
